@@ -25,7 +25,7 @@ jobs:
         run: npx --yes stylelint "frontend/*.css" --allow-empty-input
 
       - name: Lint JS
-        run: npx --yes eslint frontend/app.js --no-eslintrc --env browser,es2021 --parser-options=ecmaVersion:2021
+        run: npx --yes eslint@8 frontend/app.js --no-eslintrc --env browser,es2021 --parser-options=ecmaVersion:2021
 
   test:
     name: Smoke test static site
