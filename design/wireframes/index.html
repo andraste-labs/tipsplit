@@ -1,0 +1,116 @@
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TipSplit — Tip Calculator</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../styles/design-system.css">
+</head>
+<body>
+
+  <!-- Component: Header -->
+  <header class="app-header">
+    <h1>TipSplit</h1>
+    <p class="subtitle">Quick tip &amp; bill splitter</p>
+  </header>
+
+  <main class="app-container">
+
+    <!-- Component: BillInputCard -->
+    <section class="card" aria-labelledby="bill-label">
+      <label id="bill-label" for="billAmount">Bill Amount</label>
+      <div class="input-with-prefix">
+        <span class="prefix" aria-hidden="true">$</span>
+        <input
+          type="number"
+          id="billAmount"
+          name="billAmount"
+          inputmode="decimal"
+          min="0"
+          step="0.01"
+          placeholder="0.00"
+          aria-describedby="bill-help"
+        >
+      </div>
+      <span id="bill-help" class="help-text">Enter the total bill before tip</span>
+    </section>
+
+    <!-- Component: TipPresetGroup -->
+    <section class="card" aria-labelledby="tip-label">
+      <label id="tip-label">Select Tip %</label>
+      <div class="preset-group" role="group" aria-label="Tip percentage presets">
+        <button type="button" class="preset-btn" data-tip="10" aria-pressed="false">10%</button>
+        <button type="button" class="preset-btn" data-tip="15" aria-pressed="false">15%</button>
+        <button type="button" class="preset-btn" data-tip="20" aria-pressed="false">20%</button>
+      </div>
+
+      <!-- Component: CustomTipInput -->
+      <div class="custom-tip-wrap">
+        <label for="customTip">Custom Tip %</label>
+        <input
+          type="number"
+          id="customTip"
+          name="customTip"
+          inputmode="decimal"
+          min="0"
+          max="100"
+          placeholder="e.g. 18"
+          aria-describedby="custom-help"
+        >
+        <span id="custom-help" class="help-text">Overrides preset selection</span>
+      </div>
+    </section>
+
+    <!-- Component: SplitInput (optional) -->
+    <section class="card card-split" aria-labelledby="split-label">
+      <label id="split-label" for="splitCount">Split between</label>
+      <div class="split-row">
+        <input type="number" id="splitCount" name="splitCount" min="1" value="1" aria-describedby="split-help">
+        <span>people</span>
+      </div>
+      <span id="split-help" class="help-text">Optional — defaults to 1</span>
+    </section>
+
+    <!-- Component: ResultsPanel -->
+    <section class="results-panel" aria-live="polite" aria-atomic="true">
+      <div class="result-row">
+        <span class="result-label">Tip Amount</span>
+        <span class="result-value" id="tipAmount">$0.00</span>
+      </div>
+      <div class="result-row">
+        <span class="result-label">Total Bill</span>
+        <span class="result-value" id="totalAmount">$0.00</span>
+      </div>
+      <div class="result-row result-row-primary">
+        <span class="result-label">Total / Person</span>
+        <span class="result-value result-value-emphasis" id="perPersonAmount">$0.00</span>
+      </div>
+    </section>
+
+  </main>
+
+  <script>
+    // Placeholder wiring for wireframe demo purposes only.
+    // Preset button active-state toggling (visual demonstration):
+    document.querySelectorAll('.preset-btn').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        document.querySelectorAll('.preset-btn').forEach(function (b) {
+          b.classList.remove('is-selected');
+          b.setAttribute('aria-pressed', 'false');
+        });
+        btn.classList.add('is-selected');
+        btn.setAttribute('aria-pressed', 'true');
+        document.getElementById('customTip').value = '';
+      });
+    });
+    document.getElementById('customTip').addEventListener('input', function () {
+      document.querySelectorAll('.preset-btn').forEach(function (b) {
+        b.classList.remove('is-selected');
+        b.setAttribute('aria-pressed', 'false');
+      });
+    });
+  </script>
+
+</body>
+</html>

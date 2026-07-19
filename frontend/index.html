@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TipSplit — Tip Calculator</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main class="app-container">
+    <header class="app-header">
+      <h1>TipSplit</h1>
+      <p class="subtitle">Quick and easy bill splitting</p>
+    </header>
+
+    <section class="card">
+      <div class="field-group">
+        <label for="bill-amount">Bill Amount</label>
+        <div class="input-wrapper">
+          <span class="input-prefix">$</span>
+          <input
+            id="bill-amount"
+            type="number"
+            inputmode="decimal"
+            min="0"
+            step="0.01"
+            placeholder="0.00"
+            aria-describedby="bill-amount-error"
+          >
+        </div>
+        <p id="bill-amount-error" class="error-message" role="alert"></p>
+      </div>
+
+      <div class="field-group">
+        <label>Tip Percentage</label>
+        <div class="tip-presets" id="tip-presets">
+          <button type="button" class="tip-preset" data-percent="10">10%</button>
+          <button type="button" class="tip-preset" data-percent="15">15%</button>
+          <button type="button" class="tip-preset" data-percent="20">20%</button>
+        </div>
+      </div>
+
+      <div class="field-group">
+        <label for="custom-tip">Custom Tip %</label>
+        <input
+          id="custom-tip"
+          type="number"
+          inputmode="decimal"
+          min="0"
+          step="1"
+          placeholder="Enter custom %"
+          aria-describedby="custom-tip-error"
+        >
+        <p id="custom-tip-error" class="error-message" role="alert"></p>
+      </div>
+
+      <div class="field-group">
+        <label for="num-people">Split Between (people)</label>
+        <input
+          id="num-people"
+          type="number"
+          inputmode="numeric"
+          min="1"
+          step="1"
+          value="1"
+          aria-describedby="num-people-error"
+        >
+        <p id="num-people-error" class="error-message" role="alert"></p>
+      </div>
+
+      <div class="active-indicator" id="active-indicator">
+        No tip selected yet
+      </div>
+    </section>
+
+    <section class="card results-card">
+      <h2>Results</h2>
+      <div class="result-row">
+        <span class="result-label">Tip Amount</span>
+        <span class="result-value" id="tip-amount">$0.00</span>
+      </div>
+      <div class="result-row">
+        <span class="result-label">Total Amount</span>
+        <span class="result-value" id="total-amount">$0.00</span>
+      </div>
+      <div class="result-row highlight">
+        <span class="result-label">Per Person</span>
+        <span class="result-value" id="per-person-amount">$0.00</span>
+      </div>
+      <button type="button" id="reset-btn" class="reset-button">Reset</button>
+    </section>
+  </main>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>

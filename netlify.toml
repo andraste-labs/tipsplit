@@ -1,0 +1,18 @@
+# TipSplit deployment configuration
+# Confirms explicitly: NO build command, NO backend, static files only.
+
+[build]
+  # Intentionally empty - TipSplit requires no build/bundling step.
+  command = ""
+  publish = "frontend"
+
+[build.environment]
+  NODE_VERSION = "18"
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Cache-Control = "public, max-age=300, must-revalidate"

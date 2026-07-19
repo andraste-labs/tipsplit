@@ -1,0 +1,401 @@
+{
+  "project": {
+    "name": "TipSplit",
+    "description": "A single-page tip calculator for splitting a restaurant bill. The user enters the bill amount, picks a tip percentage from quick presets (10%, 15%, 20%) or a custom value, specifies the number of people, and instantly sees the tip amount, total bill, and per-person share.",
+    "type": "web-application",
+    "complexity": "low-medium",
+    "version": "1.0.0",
+    "techStack": {
+      "frontend": "React",
+      "backend": "FastAPI",
+      "database": "PostgreSQL",
+      "styling": "CSS Modules / TailwindCSS",
+      "stateManagement": "React Context / useState",
+      "apiCommunication": "REST (Axios/Fetch)"
+    }
+  },
+  "structure": {
+    "root": {
+      "files": [
+        "README.md",
+        ".gitignore",
+        "docker-compose.yml",
+        ".env.example",
+        "LICENSE"
+      ],
+      "folders": {
+        "frontend": {
+          "description": "React single-page application",
+          "files": [
+            "package.json",
+            "package-lock.json",
+            ".env",
+            "vite.config.js",
+            "index.html"
+          ],
+          "folders": {
+            "public": {
+              "files": [
+                "favicon.ico",
+                "manifest.json"
+              ]
+            },
+            "src": {
+              "files": [
+                "main.jsx",
+                "App.jsx",
+                "App.css",
+                "index.css"
+              ],
+              "folders": {
+                "components": {
+                  "files": [
+                    "BillInput.jsx",
+                    "TipPresetButtons.jsx",
+                    "CustomTipInput.jsx",
+                    "PeopleCounter.jsx",
+                    "ResultsDisplay.jsx",
+                    "ResetButton.jsx",
+                    "Header.jsx",
+                    "Footer.jsx"
+                  ]
+                },
+                "hooks": {
+                  "files": [
+                    "useTipCalculator.js",
+                    "useSaveHistory.js"
+                  ]
+                },
+                "context": {
+                  "files": [
+                    "TipContext.jsx"
+                  ]
+                },
+                "services": {
+                  "files": [
+                    "api.js",
+                    "historyService.js"
+                  ]
+                },
+                "utils": {
+                  "files": [
+                    "calculations.js",
+                    "formatCurrency.js",
+                    "validators.js"
+                  ]
+                },
+                "styles": {
+                  "files": [
+                    "variables.css",
+                    "globals.css"
+                  ]
+                },
+                "assets": {
+                  "folders": {
+                    "icons": {},
+                    "images": {}
+                  }
+                },
+                "tests": {
+                  "files": [
+                    "TipInput.test.jsx",
+                    "calculations.test.js",
+                    "ResultsDisplay.test.jsx"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "backend": {
+          "description": "FastAPI backend service",
+          "files": [
+            "requirements.txt",
+            "main.py",
+            ".env",
+            "Dockerfile",
+            "alembic.ini"
+          ],
+          "folders": {
+            "app": {
+              "files": [
+                "__init__.py",
+                "config.py",
+                "database.py",
+                "dependencies.py"
+              ],
+              "folders": {
+                "models": {
+                  "files": [
+                    "__init__.py",
+                    "tip_history.py",
+                    "user.py"
+                  ]
+                },
+                "schemas": {
+                  "files": [
+                    "__init__.py",
+                    "tip_schema.py",
+                    "user_schema.py"
+                  ]
+                },
+                "routers": {
+                  "files": [
+                    "__init__.py",
+                    "tip_calculator.py",
+                    "history.py",
+                    "health.py"
+                  ]
+                },
+                "services": {
+                  "files": [
+                    "__init__.py",
+                    "tip_service.py",
+                    "history_service.py"
+                  ]
+                },
+                "core": {
+                  "files": [
+                    "__init__.py",
+                    "security.py",
+                    "logging_config.py"
+                  ]
+                },
+                "utils": {
+                  "files": [
+                    "__init__.py",
+                    "calculations.py",
+                    "validators.py"
+                  ]
+                }
+              }
+            },
+            "alembic": {
+              "files": [
+                "env.py",
+                "script.py.mako"
+              ],
+              "folders": {
+                "versions": {}
+              }
+            },
+            "tests": {
+              "files": [
+                "__init__.py",
+                "test_tip_calculator.py",
+                "test_history.py",
+                "conftest.py"
+              ]
+            }
+          }
+        },
+        "database": {
+          "description": "Database scripts and migrations",
+          "files": [
+            "schema.sql",
+            "seed_data.sql"
+          ],
+          "folders": {
+            "migrations": {
+              "description": "Alembic-managed migration scripts (mirrors backend/alembic/versions)"
+            }
+          }
+        },
+        "docs": {
+          "files": [
+            "API_REFERENCE.md",
+            "ARCHITECTURE.md",
+            "SETUP_GUIDE.md"
+          ]
+        },
+        "scripts": {
+          "files": [
+            "setup.sh",
+            "start_dev.sh",
+            "run_migrations.sh",
+            "seed_db.sh"
+          ]
+        },
+        ".github": {
+          "folders": {
+            "workflows": {
+              "files": [
+                "ci.yml",
+                "deploy.yml"
+              ]
+            }
+          }
+        }
+      }
+    }
+  },
+  "features": [
+    {
+      "name": "Bill Amount Entry",
+      "description": "Input field for entering the total bill amount with validation for numeric and positive values.",
+      "component": "BillInput.jsx"
+    },
+    {
+      "name": "Tip Percentage Presets",
+      "description": "Quick-select buttons for common tip percentages (10%, 15%, 20%).",
+      "component": "TipPresetButtons.jsx"
+    },
+    {
+      "name": "Custom Tip Percentage",
+      "description": "Allows user to input a custom tip percentage instead of using presets.",
+      "component": "CustomTipInput.jsx"
+    },
+    {
+      "name": "Number of People",
+      "description": "Increment/decrement counter or input to specify how many people are splitting the bill.",
+      "component": "PeopleCounter.jsx"
+    },
+    {
+      "name": "Real-time Calculation",
+      "description": "Instantly calculates and displays tip amount, total bill, and per-person share as inputs change.",
+      "component": "ResultsDisplay.jsx",
+      "hook": "useTipCalculator.js"
+    },
+    {
+      "name": "Reset Functionality",
+      "description": "Button to reset all inputs to default values.",
+      "component": "ResetButton.jsx"
+    },
+    {
+      "name": "Calculation History (Optional)",
+      "description": "Persist past calculations to PostgreSQL via FastAPI backend for user reference.",
+      "backendRoute": "/api/history",
+      "component": "historyService.js"
+    },
+    {
+      "name": "Responsive Design",
+      "description": "Mobile-first responsive layout ensuring usability on phones, tablets, and desktops."
+    },
+    {
+      "name": "Input Validation",
+      "description": "Client-side and server-side validation to prevent invalid bill amounts, tip percentages, or people counts."
+    }
+  ],
+  "api": {
+    "baseUrl": "/api",
+    "endpoints": [
+      {
+        "path": "/api/health",
+        "method": "GET",
+        "description": "Health check endpoint for service monitoring."
+      },
+      {
+        "path": "/api/tip/calculate",
+        "method": "POST",
+        "description": "Calculates tip, total, and per-person split based on input parameters.",
+        "requestBody": {
+          "billAmount": "number",
+          "tipPercentage": "number",
+          "numberOfPeople": "integer"
+        },
+        "responseBody": {
+          "tipAmount": "number",
+          "totalAmount": "number",
+          "perPersonAmount": "number"
+        }
+      },
+      {
+        "path": "/api/history",
+        "method": "GET",
+        "description": "Retrieves saved tip calculation history."
+      },
+      {
+        "path": "/api/history",
+        "method": "POST",
+        "description": "Saves a new tip calculation to history."
+      },
+      {
+        "path": "/api/history/{id}",
+        "method": "DELETE",
+        "description": "Deletes a specific history record."
+      }
+    ]
+  },
+  "database": {
+    "type": "PostgreSQL",
+    "tables": [
+      {
+        "name": "tip_history",
+        "columns": [
+          { "name": "id", "type": "SERIAL", "constraints": "PRIMARY KEY" },
+          { "name": "bill_amount", "type": "NUMERIC(10,2)", "constraints": "NOT NULL" },
+          { "name": "tip_percentage", "type": "NUMERIC(5,2)", "constraints": "NOT NULL" },
+          { "name": "number_of_people", "type": "INTEGER", "constraints": "NOT NULL" },
+          { "name": "tip_amount", "type": "NUMERIC(10,2)", "constraints": "NOT NULL" },
+          { "name": "total_amount", "type": "NUMERIC(10,2)", "constraints": "NOT NULL" },
+          { "name": "per_person_amount", "type": "NUMERIC(10,2)", "constraints": "NOT NULL" },
+          { "name": "created_at", "type": "TIMESTAMP", "constraints": "DEFAULT CURRENT_TIMESTAMP" }
+        ]
+      }
+    ]
+  },
+  "deployment": {
+    "environment": {
+      "development": {
+        "frontend": "Vite dev server (localhost:5173)",
+        "backend": "Uvicorn (localhost:8000)",
+        "database": "Local PostgreSQL instance via Docker"
+      },
+      "production": {
+        "frontend": "Static build served via Nginx or Vercel/Netlify",
+        "backend": "FastAPI served via Uvicorn/Gunicorn behind Nginx reverse proxy, containerized",
+        "database": "Managed PostgreSQL (e.g., AWS RDS, Supabase, or Render Postgres)"
+      }
+    },
+    "containerization": {
+      "docker": true,
+      "dockerCompose": {
+        "services": [
+          "frontend",
+          "backend",
+          "postgres"
+        ]
+      }
+    },
+    "cicd": {
+      "provider": "GitHub Actions",
+      "pipelines": [
+        "lint-and-test",
+        "build",
+        "deploy"
+      ]
+    },
+    "hosting": {
+      "frontend": "Vercel / Netlify",
+      "backend": "Render / Railway / AWS ECS",
+      "database": "Render Postgres / Supabase / AWS RDS"
+    },
+    "environmentVariables": [
+      "DATABASE_URL",
+      "API_BASE_URL",
+      "SECRET_KEY",
+      "CORS_ORIGINS",
+      "VITE_API_URL"
+    ]
+  },
+  "testing": {
+    "frontend": {
+      "framework": "Vitest + React Testing Library",
+      "coverageTarget": "80%"
+    },
+    "backend": {
+      "framework": "Pytest",
+      "coverageTarget": "85%"
+    }
+  },
+  "additionalConsiderations": {
+    "accessibility": "WCAG 2.1 AA compliance for form inputs and buttons",
+    "internationalization": "Support for multiple currency formats (future enhancement)",
+    "performance": "Debounced input calculations to avoid excessive re-renders",
+    "security": [
+      "Input sanitization on backend",
+      "Rate limiting on API endpoints",
+      "CORS configuration restricted to frontend origin"
+    ]
+  }
+}

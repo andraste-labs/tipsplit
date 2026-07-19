@@ -1,0 +1,44 @@
+# TipSplit - local dev + prod-like static hosting
+# Usage:
+#   Dev:  docker compose --profile dev up
+#   Prod: docker compose --profile prod up --build
+version: "3.8"
+
+services:
+  tipsplit-dev:
+    image: nginx:1.25-alpine
+    container_name: tipsplit-dev
+    profiles: ["dev"]
+    ports:
+      - "8080:80"
+    volumes:
+      # Live-edit static files - no build step required
+      - ./frontend:/usr/share/nginx/html:ro
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost/"]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+
+  tipsplit-prod:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: production
+    image: tipsplit-static:latest
+    container_name: tipsplit-prod
+    profiles: ["prod"]
+    ports:
+      - "8080:8080"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:8080/health"]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+    deploy:
+      resources:
+        limits:
+          cpus: "0.25"
+          memory: 64M

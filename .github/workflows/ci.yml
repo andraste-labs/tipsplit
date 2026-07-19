@@ -1,0 +1,68 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  lint:
+    name: Lint static assets
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node (lint tools only - app has no build step)
+        uses: actions/setup-node@v4
+        with:
+          node-version: "18"
+
+      - name: Lint HTML
+        run: npx --yes htmlhint "frontend/*.html"
+
+      - name: Lint CSS
+        run: npx --yes stylelint "frontend/*.css" --allow-empty-input
+
+      - name: Lint JS
+        run: npx --yes eslint frontend/app.js --no-eslintrc --env browser,es2021 --parser-options=ecmaVersion:2021
+
+  test:
+    name: Smoke test static site
+    needs: lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Serve frontend directory
+        run: |
+          cd frontend
+          nohup npx --yes serve -l 4173 . > /tmp/serve.log 2>&1 &
+          sleep 3
+
+      - name: Verify index.html loads
+        run: curl -sf http://localhost:4173/index.html -o /dev/null
+
+      - name: Verify styles.css loads
+        run: curl -sf http://localhost:4173/styles.css -o /dev/null
+
+      - name: Verify app.js loads
+        run: curl -sf http://localhost:4173/app.js -o /dev/null
+
+  build:
+    name: Build production Docker image
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build image
+        run: docker build --target production -t tipsplit-static:ci .
+
+      - name: Run container smoke test
+        run: |
+          docker run -d --name tipsplit-ci -p 8081:8080 tipsplit-static:ci
+          sleep 3
+          curl -sf http://localhost:8081/health
+          curl -sf http://localhost:8081/index.html -o /dev/null
+          docker stop tipsplit-ci

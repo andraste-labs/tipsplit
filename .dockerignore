@@ -1,0 +1,17 @@
+# Version control
+.git
+.github
+
+# Docs and design source (not served)
+design
+*.md
+
+# Compose / local files
+docker-compose*.yml
+.env
+.env.*
+
+# OS / editor cruft
+.DS_Store
+*.log
+node_modules
